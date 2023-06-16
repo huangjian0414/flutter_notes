@@ -1,7 +1,7 @@
 
 import 'package:flutter/material.dart';
-
 import 'notes/raddar_scan/raddar_scan_demo.dart';
+import 'notes/round_rotate/round_rotate_demo.dart';
 
 
 void main() {
@@ -60,7 +60,11 @@ class _MyHomePageState extends State<MyHomePage> {
       {
         'title':'雷达扫描',
         'page':  RaddarScanDemo()
-      }
+      },
+      {
+        'title':'圆球进度效果',
+        'page':  RoundRotateDemo()
+      },
     ];
   }
 }
