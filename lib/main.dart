@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 import 'notes/raddar_scan/raddar_scan_demo.dart';
 import 'notes/round_rotate/round_rotate_demo.dart';
+import 'notes/tick_anmi/tick_success_demo.dart';
 
 
 void main() {
@@ -64,6 +65,10 @@ class _MyHomePageState extends State<MyHomePage> {
       {
         'title':'圆球进度效果',
         'page':  RoundRotateDemo()
+      },
+      {
+        'title':'进度完成打勾效果',
+        'page':  TickSuccessDemo()
       },
     ];
   }
