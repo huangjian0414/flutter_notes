@@ -18,6 +18,7 @@ class TickSuccessView extends StatefulWidget {
 
 class _TickSuccessViewState extends State<TickSuccessView> with TickerProviderStateMixin {
 
+  late Animation _colorAnimation;
   @override
   void initState() {
 
@@ -25,7 +26,10 @@ class _TickSuccessViewState extends State<TickSuccessView> with TickerProviderSt
 
     widget.control.animationController = new AnimationController(
         vsync: this, duration: widget.control.activeDuration);
+    _colorAnimation = ColorTween(begin: widget.control.bgColor, end: widget.control.doneBgColor)
+        .animate(widget.control.animationController!);
     widget.control.animationController!.repeat();
+
   }
 
   @override
@@ -44,7 +48,9 @@ class _TickSuccessViewState extends State<TickSuccessView> with TickerProviderSt
             width: widget.control.size.width,
             height: widget.control.size.height,
             decoration: BoxDecoration(
-                color: widget.control.bgColor,
+                color: widget.control.isSuccess?
+                (widget.control.needColorTransition?
+                _colorAnimation.value:widget.control.doneBgColor):widget.control.bgColor,
                 borderRadius: BorderRadius.circular(min(widget.control.size.width/2, widget.control.size.height/2))
             ),
             child: CustomPaint(

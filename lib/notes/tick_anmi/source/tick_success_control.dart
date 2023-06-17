@@ -11,6 +11,8 @@ class TickSuccessControl {
   Size size;
   ///背景色
   Color bgColor;
+  ///完成背景色
+  Color doneBgColor;
   ///进度圆圈颜色
   Color activeColor;
   ///进度圆圈画笔宽度
@@ -27,12 +29,15 @@ class TickSuccessControl {
   Duration activeDuration;
   ///完成打勾动画时间
   Duration doneDuration;
+  ///是否需要颜色过渡
+  bool needColorTransition;
 
   TickSuccessControl({
     this.isSuccess = false,
     this.animationController,
     this.size = const Size(20, 20),
-    this.bgColor = Colors.blueAccent,
+    this.bgColor = Colors.grey,
+    this.doneBgColor = Colors.blueAccent,
     this.activeColor = Colors.white,
     this.doneColor = Colors.white,
     this.activeDuration = const Duration(seconds: 1),
@@ -40,7 +45,8 @@ class TickSuccessControl {
     this.activeWidth = 1,
     this.doneWidth = 2,
     this.activeStartAngle = 0,
-    this.activeEndAngle = pi*3/2
+    this.activeEndAngle = pi*3/2,
+    this.needColorTransition = true
   });
 
   updateStatus(bool status){
