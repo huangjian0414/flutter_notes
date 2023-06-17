@@ -1,4 +1,6 @@
 
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 
 import 'tick_success_control.dart';
@@ -22,7 +24,7 @@ class _TickSuccessViewState extends State<TickSuccessView> with TickerProviderSt
     super.initState();
 
     widget.control.animationController = new AnimationController(
-        vsync: this, duration: Duration(milliseconds: 1000));
+        vsync: this, duration: widget.control.activeDuration);
     widget.control.animationController!.repeat();
   }
 
@@ -39,14 +41,23 @@ class _TickSuccessViewState extends State<TickSuccessView> with TickerProviderSt
         animation: widget.control.animationController!,
         builder: (context,child) {
           return Container(
-            width: 20,
-            height: 20,
+            width: widget.control.size.width,
+            height: widget.control.size.height,
             decoration: BoxDecoration(
-                color: Colors.blue,
-                borderRadius: BorderRadius.circular(10)
+                color: widget.control.bgColor,
+                borderRadius: BorderRadius.circular(min(widget.control.size.width/2, widget.control.size.height/2))
             ),
             child: CustomPaint(
-              painter: PathPainter(widget.control.animationController!.value,isSuccess: widget.control.isSuccess),
+              painter: TickSuccessPainter(
+                  widget.control.animationController!.value,
+                  isSuccess: widget.control.isSuccess,
+                arcColor: widget.control.activeColor,
+                arcWidth: widget.control.activeWidth,
+                arcStartAngle: widget.control.activeStartAngle,
+                arcEndAngle: widget.control.activeEndAngle,
+                tickColor: widget.control.doneColor,
+                tickWidth: widget.control.doneWidth
+              ),
             ),
           );
         }
