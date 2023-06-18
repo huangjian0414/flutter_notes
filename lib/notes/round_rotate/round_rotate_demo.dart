@@ -1,5 +1,4 @@
 
-
 import 'package:flutter/material.dart';
 import 'package:flutter_notes/notes/round_rotate/round_rotate_paint.dart';
 
@@ -23,15 +22,27 @@ class _RoundRotateDemoState extends State<RoundRotateDemo>  with SingleTickerPro
     _controller.repeat();
   }
   @override
+  void dispose() {
+    // TODO: implement dispose
+    _controller.dispose();
+    super.dispose();
+  }
+  @override
   Widget build(BuildContext context) {
+
     return Scaffold(
       appBar: AppBar(
         title: Text('圆球进度效果'),
       ),
       body: Center(
         child: Container(
-          child: CustomPaint(
-            foregroundPainter: RoundRotatePainter(),
+          child: AnimatedBuilder(
+            animation: _controller.view,
+            builder: (context,child) {
+              return CustomPaint(
+                foregroundPainter: RoundRotatePainter(progress: _controller.value),
+              );
+            }
           ),
         ),
       ),
