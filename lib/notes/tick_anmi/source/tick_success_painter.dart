@@ -13,10 +13,10 @@ class TickSuccessPainter extends CustomPainter {
   Color arcColor;
   ///进度圆圈宽度
   double arcWidth;
-  ///进度圆圈开始角度
+  ///进度圆弧开始角度
   double arcStartAngle;
-  ///进度圆圈结束角度
-  double arcEndAngle;
+  ///进度圆弧角度
+  double arcSweepAngle;
   ///打勾颜色
   Color tickColor;
   ///打勾线条宽度
@@ -29,7 +29,7 @@ class TickSuccessPainter extends CustomPainter {
         this.arcWidth = 1,
         this.tickWidth = 2,
         this.arcStartAngle = 0,
-        this.arcEndAngle = pi*3/2
+        this.arcSweepAngle = pi*3/2
       });
 
   Paint _paint = new Paint()
@@ -60,7 +60,7 @@ class TickSuccessPainter extends CustomPainter {
       _circlePaint.color = arcColor;
       _circlePaint.strokeWidth = arcWidth;
       Path arcPath = Path();
-      arcPath.addArc(Rect.fromCircle(center: center, radius: radius-5), arcStartAngle, arcEndAngle);
+      arcPath.addArc(Rect.fromCircle(center: center, radius: radius-5), arcStartAngle, arcSweepAngle);
       canvas.translate(center.dx, center.dy);
       canvas.rotate(pi*2*progress);
       canvas.translate(-center.dx, -center.dy);

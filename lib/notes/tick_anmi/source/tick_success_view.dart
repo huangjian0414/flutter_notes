@@ -42,7 +42,7 @@ class _TickSuccessViewState extends State<TickSuccessView> with TickerProviderSt
   @override
   Widget build(BuildContext context) {
     return AnimatedBuilder(
-        animation: widget.control.animationController!,
+        animation: widget.control.animationController!.view,
         builder: (context,child) {
           return Container(
             width: widget.control.size.width,
@@ -60,7 +60,7 @@ class _TickSuccessViewState extends State<TickSuccessView> with TickerProviderSt
                 arcColor: widget.control.activeColor,
                 arcWidth: widget.control.activeWidth,
                 arcStartAngle: widget.control.activeStartAngle,
-                arcEndAngle: widget.control.activeEndAngle,
+                arcSweepAngle: widget.control.activeEndAngle,
                 tickColor: widget.control.doneColor,
                 tickWidth: widget.control.doneWidth
               ),

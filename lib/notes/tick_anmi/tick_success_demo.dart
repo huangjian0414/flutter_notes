@@ -16,7 +16,7 @@ class TickSuccessDemo extends StatefulWidget {
 class _TickSuccessDemoState extends State<TickSuccessDemo> {
 
   bool isSuccess = false;
-  TickSuccessControl control = TickSuccessControl(needColorTransition: false);
+  TickSuccessControl control = TickSuccessControl(needColorTransition: true);
 
   @override
   Widget build(BuildContext context) {
