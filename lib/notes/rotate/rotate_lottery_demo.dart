@@ -16,8 +16,12 @@ class _WheelPageState extends State<WheelDemo> {
   double endAngle = 0.0;
   bool isSpinning = false;
   int selectedItemIndex = -1;
+  Timer? _timer;
 
   List<Color> _colors = [];
+
+  // 初始旋转速度
+  double _rotationSpeed = pi/18;
 
   @override
   void initState() {
@@ -65,9 +69,10 @@ class _WheelPageState extends State<WheelDemo> {
 
     // 开始旋转
     startAngle = 0.0;
-    Timer.periodic(Duration(milliseconds: 16), (timer) {
+    _timer?.cancel();
+    _timer = Timer.periodic(Duration(milliseconds: 16), (timer) {
       setState(() {
-        startAngle += pi/18;
+        startAngle += _rotationSpeed;
         if (startAngle >= endAngle) {
           startAngle = endAngle;
           timer.cancel();
@@ -75,6 +80,12 @@ class _WheelPageState extends State<WheelDemo> {
         }
       });
     });
+  }
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    _timer?.cancel();
+    super.dispose();
   }
 
   @override
