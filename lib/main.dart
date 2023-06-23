@@ -1,5 +1,6 @@
 
 import 'package:flutter/material.dart';
+import 'package:flutter_notes/notes/rotate/rotate_lottery_demo.dart';
 import 'notes/raddar_scan/raddar_scan_demo.dart';
 import 'notes/round_rotate/round_rotate_demo.dart';
 import 'notes/tick_anmi/tick_success_demo.dart';
@@ -69,6 +70,10 @@ class _MyHomePageState extends State<MyHomePage> {
       {
         'title':'进度完成打勾效果',
         'page':  TickSuccessDemo()
+      },
+      {
+        'title':'抽奖大转盘',
+        'page':  WheelDemo()
       },
     ];
   }
