@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/physics.dart';
 
 
 class WheelDemo extends StatefulWidget {
@@ -9,7 +10,7 @@ class WheelDemo extends StatefulWidget {
   _WheelPageState createState() => _WheelPageState();
 }
 
-class _WheelPageState extends State<WheelDemo> {
+class _WheelPageState extends State<WheelDemo> with SingleTickerProviderStateMixin{
   final List<WheelItem> wheelItems = [];
 
   double startAngle = 0.0;
@@ -20,9 +21,9 @@ class _WheelPageState extends State<WheelDemo> {
 
   List<Color> _colors = [];
 
-  // 初始旋转速度
-  double _rotationSpeed = pi/18;
 
+  late AnimationController _controller;
+  late Animation _animation;
   @override
   void initState() {
     // TODO: implement initState
@@ -33,6 +34,8 @@ class _WheelPageState extends State<WheelDemo> {
       final item = WheelItem(text: text, normalColor: color);
       wheelItems.add(item);
     }
+    _controller = AnimationController(vsync: this,duration: Duration(seconds: 4));
+    _animation = Tween(begin: 0,end: endAngle).animate(_controller);
   }
   getOtherColor(){
     Random random = Random();
@@ -67,24 +70,22 @@ class _WheelPageState extends State<WheelDemo> {
     int randomAngle = random.nextInt((itemAngle/2*100).toInt());
     endAngle = startSpace + 2*pi * 4 - randomAngle/100;
 
-    // 开始旋转
-    startAngle = 0.0;
-    _timer?.cancel();
-    _timer = Timer.periodic(Duration(milliseconds: 16), (timer) {
-      setState(() {
-        startAngle += _rotationSpeed;
-        if (startAngle >= endAngle) {
-          startAngle = endAngle;
-          timer.cancel();
-          isSpinning = false;
-        }
-      });
+    _controller.reset();
+    _animation = Tween(begin: 0,end: endAngle).animate(_controller);
+    _controller.animateWith(
+        FrictionSimulation(
+            0.05,
+            _animation.value*1.0,
+            3
+        )).then((value) {
+      isSpinning = false;
     });
   }
   @override
   void dispose() {
     // TODO: implement dispose
     _timer?.cancel();
+    _controller.dispose();
     super.dispose();
   }
 
@@ -97,13 +98,18 @@ class _WheelPageState extends State<WheelDemo> {
       body: Center(
         child: GestureDetector(
           onTap: isSpinning ? null : spinWheel,
-          child: CustomPaint(
-            size: Size(300, 300),
-            painter: WheelPainter(
-              wheelItems: wheelItems,
-              startAngle: startAngle,
-              textSize: 16,
-            ),
+          child: AnimatedBuilder(
+            animation: _animation,
+            builder: (context,child) {
+              return CustomPaint(
+                size: Size(300, 300),
+                painter: WheelPainter(
+                  wheelItems: wheelItems,
+                  startAngle: _animation.value*1.0,
+                  textSize: 16,
+                ),
+              );
+            }
           ),
         ),
       ),
