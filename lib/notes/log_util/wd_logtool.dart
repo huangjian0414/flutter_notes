@@ -105,29 +105,29 @@ class WDLogger {
   ///打印日志
   static d(Object message) {
     final logger = WDLogger();
-    logger._d(message);
+    logger._d(message,StackTrace.current);
   }
-  _d(Object message){
+  _d(Object message,StackTrace trace){
     final date = DateTime.now();
     String time = '${date.year}-${date.month}-${date.day} ${date.hour}:${date.month}:${date.second}:${date.millisecond}';
     if (printEnable){
-      log("Time: ${time} ( Msg: $message ${getStackTraceInfo()} )");
+      log("Time: ${time} ( Msg: $message ${getStackTraceInfo(trace)} )");
     }
     var output = StringBuffer('Time: ${time} ');
     if (message is String) {
-      output.write("( Msg: $message ${getStackTraceInfo()} )");
+      output.write("( Msg: $message ${getStackTraceInfo(trace)} )");
     } else{
-      output.write("( Msg: ${message.toString()} ${getStackTraceInfo()} )");
+      output.write("( Msg: ${message.toString()} ${getStackTraceInfo(trace)} )");
     }
     _sink?.writeAll([output.toString()], '\n');
     _sink?.writeln();
   }
 
-  String getStackTraceInfo(){
+  String getStackTraceInfo(StackTrace trace){
     if (!showFileRow) {
       return '';
     }
-    WDCustomTrace programInfo = WDCustomTrace(StackTrace.current);
+    WDCustomTrace programInfo = WDCustomTrace(trace);
     return '-- File: ${programInfo.fileName} -- Row: ${programInfo.lineNumber}';
   }
   ///校验删除过期的日志文件
@@ -167,7 +167,11 @@ class WDCustomTrace {
   }
 
   void _parseTrace() {
-    var traceString = this._trace.toString().split("\n")[0];
+    List<String> traceStringList = this._trace.toString().split("\n");
+    if (traceStringList.length < 2) {
+      return;
+    }
+    var traceString = traceStringList[1];
     var indexOfPackage = traceString.indexOf('(');
     var indexOfFileName = traceString.indexOf('.dart');
     // var indexOfFileName = traceString.indexOf(RegExp(r'[A-Za-z_]+.dart'));
