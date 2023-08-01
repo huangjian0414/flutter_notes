@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 import 'dart:developer';
 import 'package:path_provider/path_provider.dart';
-
+import 'wdlogger_trace.dart';
 
 
 class WDLogger {
@@ -53,8 +53,8 @@ class WDLogger {
     logger.file = file;
     await logger.checkDeleteLogs(saveTime);
     logger._sink = logger.file!.openWrite(
-      mode: overrideExisting ? FileMode.writeOnly : FileMode.writeOnlyAppend,
-      encoding: encoding
+        mode: overrideExisting ? FileMode.writeOnly : FileMode.writeOnlyAppend,
+        encoding: encoding
     );
     return true;
   }
@@ -127,7 +127,7 @@ class WDLogger {
     if (!showFileRow) {
       return '';
     }
-    WDCustomTrace programInfo = WDCustomTrace(trace);
+    WDLoggerTrace programInfo = WDLoggerTrace(trace);
     return '-- File: ${programInfo.fileName} -- Row: ${programInfo.lineNumber}';
   }
   ///校验删除过期的日志文件
@@ -152,43 +152,5 @@ class WDLogger {
         x.delete();
       }
     }
-  }
-}
-
-class WDCustomTrace {
-  final StackTrace _trace;
-  String fileName = '';
-  int lineNumber = 0;
-  int columnNumber = 0;
-
-
-  WDCustomTrace(this._trace) {
-    _parseTrace();
-  }
-
-  void _parseTrace() {
-    List<String> traceStringList = this._trace.toString().split("\n");
-    if (traceStringList.length < 2) {
-      return;
-    }
-    var traceString = traceStringList[1];
-    var indexOfPackage = traceString.indexOf('(');
-    var indexOfFileName = traceString.indexOf('.dart');
-    // var indexOfFileName = traceString.indexOf(RegExp(r'[A-Za-z_]+.dart'));
-    if(indexOfFileName+5>traceString.length){
-      return;
-    }
-    if(indexOfPackage+1>indexOfFileName+5){
-      return;
-    }
-    var filePath = traceString.substring(indexOfPackage+1,indexOfFileName+5);
-    var fileInfo = traceString.substring(indexOfFileName);
-    var listOfInfos = fileInfo.split(":");
-    // this.fileName = listOfInfos[0];
-    this.fileName = filePath;
-    this.lineNumber = int.parse(listOfInfos[1]);
-    var columnStr = listOfInfos[2];
-    columnStr = columnStr.replaceFirst(")", "");
-    this.columnNumber = int.parse(columnStr);
   }
 }
