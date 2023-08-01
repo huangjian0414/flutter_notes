@@ -1,10 +1,18 @@
 
+import 'dart:async';
+
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_notes/notes/log_util/log_manager.dart';
+import 'package:flutter_notes/notes/log_util/wd_logtool.dart';
 import 'package:flutter_notes/notes/rotate/rotate_lottery_demo.dart';
+import 'notes/log_util/log_util.dart';
 import 'notes/raddar_scan/raddar_scan_demo.dart';
 import 'notes/round_rotate/round_rotate_demo.dart';
 import 'notes/tick_anmi/tick_success_demo.dart';
-
+import 'notes/wd_area_selection/area_selection_demo.dart';
+import 'dart:isolate';
+import 'package:path_provider/path_provider.dart';
 
 void main() {
   runApp(const MyApp());
@@ -32,6 +40,21 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+
+    WDLogger.initLogger(printEnable: true).then((value) {
+      Timer.periodic(Duration(milliseconds: 500), (timer) {
+        WDLogger.d('message --- ${timer.tick}');
+        WDLogger.d({'11':'232','22':'65'});
+        WDLogger.d(Colors.cyan);
+      });
+    });
+
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -39,6 +62,10 @@ class _MyHomePageState extends State<MyHomePage> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Flutter Notes'),
+        actions: [
+          CircularProgressIndicator(color: Colors.red,),
+          SizedBox(width: 120,)
+        ],
       ),
       body: Center(
         child: SafeArea(
@@ -75,6 +102,11 @@ class _MyHomePageState extends State<MyHomePage> {
         'title':'抽奖大转盘',
         'page':  WheelDemo()
       },
+      {
+        'title':'区域选择',
+        'page':  AreaSelectionDemo()
+      },
     ];
   }
+
 }
