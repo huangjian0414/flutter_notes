@@ -46,13 +46,13 @@ class _MyHomePageState extends State<MyHomePage> {
     // TODO: implement initState
     super.initState();
 
-    WDLogger.initLogger(printEnable: true).then((value) {
-      Timer.periodic(Duration(milliseconds: 500), (timer) {
-        WDLogger.d('message --- ${timer.tick}');
-        WDLogger.d({'11':'232','22':'65'});
-        WDLogger.d(Colors.cyan);
-      });
-    });
+    // WDLogger.initLogger(printEnable: true).then((value) {
+    //   Timer.periodic(Duration(milliseconds: 500), (timer) {
+    //     WDLogger.d('message --- ${timer.tick}');
+    //     WDLogger.d({'11':'232','22':'65'});
+    //     WDLogger.d(Colors.cyan);
+    //   });
+    // });
 
   }
 

@@ -34,7 +34,7 @@ class WDLogger {
     logger.encoding = encoding;
     logger.showFileRow = showFileRow;
     logger.saveTime = saveTime;
-    logger.checkDeleteLogs(saveTime);
+    await logger.checkDeleteLogs(saveTime);
     File? file;
     if (path == null) {
       file = await logger.getDefaultFile();
