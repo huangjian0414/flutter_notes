@@ -53,7 +53,6 @@ class _MyHomePageState extends State<MyHomePage> {
     //     WDLogger.d(Colors.cyan);
     //   });
     // });
-
   }
 
   @override
@@ -62,10 +61,6 @@ class _MyHomePageState extends State<MyHomePage> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Flutter Notes'),
-        actions: [
-          CircularProgressIndicator(color: Colors.red,),
-          SizedBox(width: 120,)
-        ],
       ),
       body: Center(
         child: SafeArea(

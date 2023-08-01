@@ -16,7 +16,9 @@ class WDLogger {
   File? file;
   bool overrideExisting = false;
   Encoding encoding = utf8;
+  ///是否展示日志打印的文件位置，行数
   bool showFileRow = false;
+  ///日志保存时间，默认7天，会根据文件路径去删除当前文件夹下的文件
   int saveTime = 7;
   IOSink? _sink;
 
@@ -34,7 +36,6 @@ class WDLogger {
     logger.encoding = encoding;
     logger.showFileRow = showFileRow;
     logger.saveTime = saveTime;
-    await logger.checkDeleteLogs(saveTime);
     File? file;
     if (path == null) {
       file = await logger.getDefaultFile();
@@ -50,6 +51,7 @@ class WDLogger {
     WDLogger.d('file check success -- ${file}');
     logger.destroy();
     logger.file = file;
+    await logger.checkDeleteLogs(saveTime);
     logger._sink = logger.file!.openWrite(
       mode: overrideExisting ? FileMode.writeOnly : FileMode.writeOnlyAppend,
       encoding: encoding
@@ -63,22 +65,13 @@ class WDLogger {
       if (Directory == null) {
         return null;
       }
-      var dir = Directory(directory!.path+"/wdlog");
-      try {
-        bool exist = await dir.exists();
-        if (!exist) {
-          await dir.create();
-        }
-      } catch(e) {
-        return null;
-      }
       final date = DateTime.now();
       var file = File(directory!.path+"/wdlog/${date.year}_${date.month}_${date.day}.log");
       WDLogger.d('default file path --- ${file}');
       try {
         bool exist = await file.exists();
         if (!exist) {
-          return await file.create();
+          return await file.create(recursive: true);
         }else{
           return file;
         }
@@ -94,7 +87,7 @@ class WDLogger {
     try {
       bool exists = await file.exists();
       if (!exists) {
-        return await file.create();
+        return await file.create(recursive: true);
       }
       return Future.value(file);
     } catch (e) {
@@ -137,14 +130,15 @@ class WDLogger {
     WDCustomTrace programInfo = WDCustomTrace(StackTrace.current);
     return '-- File: ${programInfo.fileName} -- Row: ${programInfo.lineNumber}';
   }
-
+  ///校验删除过期的日志文件
   Future checkDeleteLogs(int day) async {
-    // 获取目录的所有文件
-    final Directory? directory = await getExternalStorageDirectory();
-    if (Directory == null) {
+    if (this.file == null) {
       return;
     }
-    var dir = Directory(directory!.path+"/wdlog");
+    String path = this.file!.path;
+    final index = path.lastIndexOf('/');
+    path = path.substring(0,index);
+    var dir = Directory(path);
     bool exist = await dir.exists();
     if (!exist) {
       return;
@@ -154,9 +148,8 @@ class WDLogger {
       final fileCreateTime = x.statSync().accessed;
       final currentDate = DateTime.now();
       final difference = currentDate.difference(fileCreateTime).inDays;
-      if (difference > day) {
-        var file = File(x.path);
-        file.delete();
+      if (difference >= 0) {
+        x.delete();
       }
     }
   }
