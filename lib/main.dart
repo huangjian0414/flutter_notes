@@ -9,10 +9,13 @@ import 'notes/raddar_scan/raddar_scan_demo.dart';
 import 'notes/round_rotate/round_rotate_demo.dart';
 import 'notes/tick_anmi/tick_success_demo.dart';
 import 'notes/wd_area_selection/area_selection_demo.dart';
+import 'package:wd_screen_button/wd_screen_button.dart';
 
 void main() {
   runApp(const MyApp());
 }
+
+final GlobalKey<NavigatorState> navigatorKey = new GlobalKey<NavigatorState>();
 
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
@@ -23,6 +26,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
+      navigatorKey: navigatorKey,
       home: const MyHomePage(),
     );
   }
@@ -49,6 +53,16 @@ class _MyHomePageState extends State<MyHomePage> {
     //     WDLogger.d(Colors.cyan);
     //   });
     // });
+
+    WDScreenButton.initConfig(
+      navigatorKey,
+      left: 30,
+      top: 100,
+      isShowBtn: true,
+      callBack: () {
+        // 点击按钮触发的操作
+      },
+    );
   }
 
   @override
