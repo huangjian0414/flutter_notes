@@ -1,9 +1,6 @@
 
-import 'dart:async';
-
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_notes/notes/log_util/wdlogger.dart';
 import 'package:flutter_notes/notes/rotate/rotate_lottery_demo.dart';
 import 'notes/raddar_scan/raddar_scan_demo.dart';
 import 'notes/round_rotate/round_rotate_demo.dart';
@@ -47,11 +44,11 @@ class _MyHomePageState extends State<MyHomePage> {
     super.initState();
 
     // WDLogger.initLogger(printEnable: true).then((value) {
-    //   Timer.periodic(Duration(milliseconds: 500), (timer) {
-    //     WDLogger.d('message --- ${timer.tick}');
-    //     WDLogger.d({'11':'232','22':'65'});
-    //     WDLogger.d(Colors.cyan);
-    //   });
+      // Timer.periodic(Duration(milliseconds: 500), (timer) {
+      //   WDLogger.d('message --- ${timer.tick}');
+      //   WDLogger.d({'11':'232','22':'65'});
+      //   WDLogger.d(Colors.cyan);
+      // });
     // });
 
     WDScreenButton.initConfig(

@@ -52,6 +52,10 @@ dev_dependencies:
   wd_screen_button:
     path: ../../sihua/wd_packages/wd_screen_button
 
+#  wdlogger:
+#    path: ../../sihua/wd_packages/wdlogger
+
+
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
 
