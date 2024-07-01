@@ -1,4 +1,6 @@
 
+import 'dart:async';
+
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_notes/notes/rotate/rotate_lottery_demo.dart';
@@ -7,6 +9,7 @@ import 'notes/round_rotate/round_rotate_demo.dart';
 import 'notes/tick_anmi/tick_success_demo.dart';
 import 'notes/wd_area_selection/area_selection_demo.dart';
 import 'package:wd_screen_button/wd_screen_button.dart';
+import 'package:wdlogger/wdlogger.dart';
 
 void main() {
   runApp(const MyApp());
@@ -42,24 +45,22 @@ class _MyHomePageState extends State<MyHomePage> {
   void initState() {
     // TODO: implement initState
     super.initState();
+    WDLogger.registerNavigatorKey(navigatorKey);
+    WDLogger.initLogger(printEnable: true,needLogEntry: true).then((value) {
+      Timer.periodic(Duration(milliseconds: 500), (timer) {
+        WDLogger.d('message --- ${timer.tick}');
+      });
+    });
 
-    // WDLogger.initLogger(printEnable: true).then((value) {
-      // Timer.periodic(Duration(milliseconds: 500), (timer) {
-      //   WDLogger.d('message --- ${timer.tick}');
-      //   WDLogger.d({'11':'232','22':'65'});
-      //   WDLogger.d(Colors.cyan);
-      // });
-    // });
-
-    WDScreenButton.initConfig(
-      navigatorKey,
-      left: 30,
-      top: 100,
-      isShowBtn: true,
-      callBack: () {
-        // 点击按钮触发的操作
-      },
-    );
+    // WDScreenButton.initConfig(
+    //   navigatorKey,
+    //   left: 30,
+    //   top: 100,
+    //   isShowBtn: true,
+    //   callBack: () {
+    //     // 点击按钮触发的操作
+    //   },
+    // );
   }
 
   @override
